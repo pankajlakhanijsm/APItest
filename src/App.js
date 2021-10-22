@@ -1,37 +1,44 @@
 import './App.css';
 import React, { Component } from 'react';
-import { render } from '@testing-library/react';
 import { connect } from 'react-redux';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      formValue: []
+    }
   }
-  render(){
+  submitHandler = () => {
+    debugger;
+    const { formValue } = this.state;
+    const keyName = Object.keys(formValue)[0];
+    fetch({ method: "post", body: { [keyName]: formValue[keyName] }, url: "http://localhost:4000/profile" }).then(e => console.log(e));
+  }
+  clickHandler = (event) => {
+    debugger;
+    const { formValue } = this.state;
+    const { name, files } = event.target;
+    this.setState({ formValue: formValue.push({ [name]: Array.from(files) }) });
+  }
+  render() {
     return (
       <div className="App">
-        <form action="http://localhost:4000/profile" method="post" enctype="multipart/form-data">
-          <input type="file" name="avatar" />
-          <input type="submit" value="Get me the stats!" class="btn btn-default" />
-        </form>
+        <input type="file" name="avatar" onChange={this.clickHandler} />
+        <button class="btn btn-default" onClick={this.submitHandler} >Submit</button>
       </div>
     )
   }
 }
-const mapStateToProps = state => {
-	return {
-		data: state.data.data
-	}
-}
+// const mapStateToProps = state => {
+//   return {
+//     data: state.data.data
+//   }
+// }
 
 
-const mapDispatchToProps = dispatch => {
-	return {
-		multiplyTwo: () => dispatch(multiplyTwo())
-	}
-}
+
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+  // mapStateToProps,
+
 )(App);
