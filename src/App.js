@@ -1,25 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { Component } from 'react';
+import { render } from '@testing-library/react';
+import { connect } from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {}
+  }
+  render(){
+    return (
+      <div className="App">
+        <form action="http://localhost:4000/profile" method="post" enctype="multipart/form-data">
+          <input type="file" name="avatar" />
+          <input type="submit" value="Get me the stats!" class="btn btn-default" />
+        </form>
+      </div>
+    )
+  }
+}
+const mapStateToProps = state => {
+	return {
+		data: state.data.data
+	}
 }
 
-export default App;
+
+const mapDispatchToProps = dispatch => {
+	return {
+		multiplyTwo: () => dispatch(multiplyTwo())
+	}
+}
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(App);
